@@ -16,6 +16,8 @@ const priceHtml=p=>`<span class="price">${money(p.price)}</span>${p.old?`<span c
 function renderProducts() {
   let shown = products.filter(p => (category === 'All' || p.category === category || p.occasion === category) && [p.name, p.category, p.colour, p.fabric].join(' ').toLowerCase().includes(query.toLowerCase()));
   if (sort !== 'featured') shown.sort((a,b) => sort === 'low' ? a.price - b.price : b.price - a.price);
+  if ($('#mobile-search').value !== query) $('#mobile-search').value = query;
+  $('#mobile-search-clear').hidden = !query;
   $('#results-count').textContent = shown.length + (shown.length === 1 ? ' beautiful find' : ' beautiful finds');
   $('#product-grid').innerHTML = shown.map(p => '<article class="product"><div class="product-image" role="button" tabindex="0" data-detail="'+p.id+'" aria-label="View '+p.name+'"><img src="assets/'+p.image+'" alt="'+p.colour+' '+p.category.toLowerCase()+' styling inspiration" loading="lazy"><span class="product-tag">'+p.tag+'</span><span class="product-view">View the details &nbsp; &nearr;</span></div><div class="product-info"><p class="product-type">'+p.category+' &middot; '+p.colour+'</p><button class="product-name" data-detail="'+p.id+'">'+p.name+'</button><div class="product-bottom"><div>'+priceHtml(p)+'</div><div class="swatches" aria-hidden="true">'+p.swatches.map(c=>'<span style="--swatch:'+c+'"></span>').join('')+'</div></div><button class="add-button" data-quick-add="'+p.id+'" aria-label="Add '+p.name+' to bag"><svg><use href="#i-bag"/></svg>'+(p.category==='Dresses'?'Choose your size':'Add to bag')+'</button></div></article>').join('');
   $('#no-results').hidden = shown.length > 0;
@@ -41,3 +43,10 @@ $('#bag-toggle').onclick=()=>{updateBag();openDialog($('#bag-dialog'))};$('#year
 
 $('#mobile-bag-toggle').addEventListener('click',()=>{updateBag();openDialog($('#bag-dialog'))});
 $('#reset-filters').addEventListener('click',()=>{query='';$('#search').value='';setFilter('All')});
+
+$('#mobile-search').addEventListener('input',e=>{query=e.target.value;$('#search').value=query;if(category!=='All')setFilter('All');else renderProducts()});
+$('#mobile-search-clear').addEventListener('click',()=>{query='';$('#search').value='';setFilter('All');$('#mobile-search').focus()});
+$('#mobile-search-form').addEventListener('submit',e=>{e.preventDefault();$('#mobile-search').blur();$('#collection').scrollIntoView({behavior:'smooth'})});
+const mobileNavItems=document.querySelectorAll('[data-mobile-nav]');
+function updateMobileNav(){const inShop=window.scrollY>$('#categories').offsetTop-150;mobileNavItems.forEach(a=>{const active=a.dataset.mobileNav===(inShop?'shop':'home');a.classList.toggle('active',active);if(active)a.setAttribute('aria-current','location');else a.removeAttribute('aria-current')})}
+window.addEventListener('scroll',updateMobileNav,{passive:true});updateMobileNav();

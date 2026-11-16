@@ -17,11 +17,12 @@ try {
     await document.fonts.ready;
   });
   assert(await page.evaluate(() => document.fonts.check('600 20px Outfit') && document.fonts.check('400 14px Jakarta')), 'Local fonts loaded');
-  for (const [name, width, height] of [['laptop',1440,1000],['ipad',820,1180],['tablet',768,1024],['mobile',390,844],['small-mobile',320,740]]) {
+  for (const [name, width, height] of [['laptop',1440,1000],['ipad',820,1180],['tablet',768,1024],['mobile',390,844],['large-mobile',430,932],['medium-mobile',360,800],['small-mobile',320,740]]) {
     await page.setViewportSize({ width, height });
     assert(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), name + ' horizontal overflow');
     assert.equal(await page.locator('.product').count(), 8);
     await page.screenshot({ path: 'qa-' + name + '.png', fullPage: true });
+    if(width<=430){await page.evaluate(()=>window.scrollTo({top:0,behavior:'instant'}));await page.screenshot({path:'qa-'+name+'-home.png'});}
   }
   await page.setViewportSize({ width:1440, height:1000 });
   await page.locator('[data-filter="Dresses"]').click();
@@ -61,7 +62,17 @@ try {
   assert.equal(await page.locator('.product').count(), 2);
   await page.locator('[data-filter="All"]').click();
   await page.setViewportSize({ width:390, height:844 });
-  await page.locator('#mobile-bag-toggle').click();
+  await page.evaluate(()=>window.scrollTo({top:0,behavior:'instant'}));
+    assert(await page.locator('.hero').evaluate(el=>el.getBoundingClientRect().height<=400), 'Compact mobile hero');
+    assert(await page.locator('.category-card h3').last().evaluate(el=>el.getBoundingClientRect().bottom<innerHeight-69), 'Category labels accessible on first phone screen');
+    await page.locator('#mobile-search').fill('Meher');
+    assert.equal(await page.locator('.product').count(),1);
+    await page.locator('#mobile-search').press('Enter');
+    await page.locator('#mobile-search-clear').click();
+    assert.equal(await page.locator('.product').count(),8);
+    await page.locator('#collection').scrollIntoViewIfNeeded();
+    await page.screenshot({path:'qa-mobile-shop.png'});
+    await page.locator('#mobile-bag-toggle').click();
   assert(await page.locator('#bag-dialog').isVisible());
   assert(await page.locator('#bag-dialog').evaluate(el => el.scrollWidth <= el.clientWidth), 'Mobile bag fits viewport');
   await page.screenshot({ path:'qa-mobile-bag.png' });
@@ -92,7 +103,7 @@ try {
     const a=luminance(text),b=luminance(bg);
     assert((Math.max(a,b)+.05)/(Math.min(a,b)+.05)>=4.5, 'Text contrast '+text+'/'+bg);
   }
-  console.log('PASS: 5 screen sizes; local fonts; normal text contrast >=4.5:1; categories, filters, search and sort; size selection; bag add/update/remove; mobile bag and product dialogs; WhatsApp message; mobile navigation; FAQs; no persistent storage.');
+  console.log('PASS: 7 screen sizes; compact mobile discovery; mobile search and clear; local fonts; normal text contrast >=4.5:1; categories, filters, search and sort; size selection; bag add/update/remove; mobile bag and product dialogs; WhatsApp message; mobile navigation; FAQs; no persistent storage.');
 } catch (error) {
   console.error(error);
   process.exitCode = 1;

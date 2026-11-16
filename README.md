@@ -32,7 +32,7 @@ The eight collection entries and prices are illustrative content. Visitors are a
     npm run check
     node verify.mjs
 
-Browser verification uses Playwright and Microsoft Edge. Set BROWSER_PATH for another compatible browser. Checks cover five viewport sizes, local fonts, normal text contrast, shopping and WhatsApp flows, keyboard dismissal, mobile controls, FAQs and no persistent storage. The test server uses port 4174 and stops after checking.
+Browser verification uses Playwright and Microsoft Edge. Set BROWSER_PATH for another compatible browser. Checks cover seven viewport sizes, local fonts, normal text contrast, shopping and WhatsApp flows, keyboard dismissal, mobile controls, FAQs and no persistent storage. The test server uses port 4174 and stops after checking.
 
 ## Asset provenance
 
@@ -41,3 +41,7 @@ Logo: website-ready reproduction of the supplied reference, made using the built
 Photography: Unsplash for the festive saree and dresses; Tata CLiQ for the pink saree; MySilkLove for cotton sarees; Pernia's Pop-Up Shop for ivory organza; Zilikaa for the gold saree. Source URLs are in download-assets.mjs. These are styling references, not confirmed inventory.
 
 Fonts: Outfit and Plus Jakarta Sans from Google Fonts, under the SIL Open Font License. See dist/assets/font-licenses.txt.
+
+## Phone experience
+
+The dedicated dist/mobile.css layout applies at 600px and below: a compact editorial hero, first-screen category row, always-visible search, two-column shopping cards, swipeable occasion edits, four-item bottom navigation, and full-screen product and bag views. Mobile search stays in sync with collection filters and desktop search. All customer selections remain in memory only.

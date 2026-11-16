@@ -1,1 +1,1 @@
-{"name":"vastra-by-varahi","version":"1.0.0","private":true,"scripts":{"start":"node serve.mjs","check":"node --check dist/app.js"}}
+{"name":"vastra-by-varahi","version":"1.0.0","private":true,"scripts":{"dev":"node serve.mjs","start":"node serve.mjs","check":"node --check dist/app.js"},"devDependencies":{"playwright":"^1.65.1"}}

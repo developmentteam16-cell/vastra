@@ -1,13 +1,43 @@
 # Vastra by Varahi
 
-Responsive, static saree and dress storefront. Open `dist/index.html` directly, or run `npm start` and visit `http://localhost:4173`.
+Responsive saree and dress boutique with a burgundy and ivory visual identity, locally hosted Outfit and Plus Jakarta Sans fonts, and readable dark text.
 
-Collection filtering, search, price sorting, product dialogs, dress sizes, in-memory shopping bag, and WhatsApp ordering to +91 8341676998. No database, customer form, analytics, cookies, localStorage, or sessionStorage. Refreshing clears the bag. WhatsApp messages remain editable before sending.
+## Run locally
 
-The eight collection entries and prices are illustrative content, with a customer-facing instruction to confirm actual photos, availability, fabric and final pricing on WhatsApp.
+Install Node.js 20 or newer:
 
-Logo: website-ready reproduction of the supplied reference using the built-in image generation tool. Prompt: preserve the full supplied Vastra by Vaarahi logo, illustration, lettering, proportions and burgundy/gold colours; prepare a website-ready copy without redesign. Saved at `dist/assets/logo.png`. The original attachment file was unavailable to the local workspace.
+    npm install
+    npm run dev
 
-Photography sources: Unsplash for the hero, festive saree and dresses; Tata CLiQ for the pink saree; MySilkLove for cotton sarees; Pernia's Pop-Up Shop for ivory organza; Zilikaa for the gold saree. Source image URLs are recorded in `download-assets.mjs`. These are styling references, not confirmed store inventory.
+Open http://localhost:4173. Stop with Ctrl+C. The server also listens on your local network; a phone on the same Wi-Fi can use the computer's local IP and port 4173 if Windows Firewall permits it. Use the deployed URL from any network.
 
-Run `npm run check` for JavaScript syntax. `verify.mjs` uses Playwright with an installed Microsoft Edge to check four viewport sizes, shopping interactions, image loading, WhatsApp message composition and absence of persistent browser storage. Install Playwright separately if repeating browser verification.
+This is a static website with no build step. Deployment files are in dist/. Set the PORT environment variable to change the local port.
+
+## Features
+
+- Category and occasion filters, search, price sorting and product details.
+- Dress sizes, shopping bag, quantity controls and mobile shopping bar.
+- WhatsApp ordering to +91 8341676998 with items, sizes, quantities and estimated total.
+- FAQs, direct WhatsApp questions and telephone contact.
+- No customer database, forms, analytics, cookies, localStorage or sessionStorage. The bag is in memory and clears on refresh. WhatsApp opens an editable message for the visitor to send.
+
+The eight collection entries and prices are illustrative content. Visitors are asked to confirm actual photos, availability, fabric, delivery and final prices on WhatsApp.
+
+## GitHub Pages
+
+.github/workflows/pages.yml publishes dist/ on pushes to main. Select GitHub Actions as the source in repository Settings > Pages before the first deployment. All asset paths support the repository subpath /vastra/.
+
+## Verification
+
+    npm run check
+    node verify.mjs
+
+Browser verification uses Playwright and Microsoft Edge. Set BROWSER_PATH for another compatible browser. Checks cover five viewport sizes, local fonts, normal text contrast, shopping and WhatsApp flows, keyboard dismissal, mobile controls, FAQs and no persistent storage. The test server uses port 4174 and stops after checking.
+
+## Asset provenance
+
+Logo: website-ready reproduction of the supplied reference, made using the built-in image generation tool. The original attachment file was unavailable locally. The prompt preserved the full artwork, lettering, proportions and burgundy/gold colours. Saved at dist/assets/logo.png.
+
+Photography: Unsplash for the festive saree and dresses; Tata CLiQ for the pink saree; MySilkLove for cotton sarees; Pernia's Pop-Up Shop for ivory organza; Zilikaa for the gold saree. Source URLs are in download-assets.mjs. These are styling references, not confirmed inventory.
+
+Fonts: Outfit and Plus Jakarta Sans from Google Fonts, under the SIL Open Font License. See dist/assets/font-licenses.txt.
